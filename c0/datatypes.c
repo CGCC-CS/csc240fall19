@@ -6,8 +6,6 @@ int main(void) {
   int y = 0x0A;          /* Hexidecimal literal */
   int z;
   unsigned int a = -40;  /* What happens here? */
-  long int l = -10000000000;
-  unsigned long int u = 10000000000;
   char c = 'A';          /* Character literal */
   char k = 66;
   char s[] = "Hello!";   /* String literal */
