@@ -13,21 +13,21 @@ int main(void) {
  
   printf("Your string is: %s", str);
   printf("Your string has %d spaces\n", count_spaces(str, LEN));
+
   return 0;
 }
 
 /* Count the number of spaces in a string */
 int count_spaces(char str[], int len) {
-  int ii = 0;
+  int ii=0;
   int count = 0;
 
   /* The size of the string is unknown here, so we look for a null-terminator */
-  while ( (ii < len) && (str[ii] != '\0') ) {
+  while ( (ii < len) && ( str[ii] != '\0') ) {
     if (str[ii] == ' ') {
-      count++;
+      count ++;
     }
     ii++;
   }
-
   return count;
 }

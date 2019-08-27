@@ -21,34 +21,35 @@ int main(void) {
   printf("add_ten(a)=%d, add_ten(b)=%d\n", add_ten(a), add_ten(b));
   printf("a=%d, b=%d\n", a, b);
 
-  printf("\n\nadd_array(arr, 8) = %d\n", add_array(arr, 8));
-
+  printf("\nadd_array(arr, 8) = %d\n", add_array(arr, 8));
+  printf("\n");
 
   say_hello();
 
   return 0;
 }
 
+/* No return type */
 void say_hello() {
   printf("Hello!\n");
 }
 
-/* Call by Value: Returns a value, does not modify x */
+/* Call-by-value - returns a value, but does not modify */
 int add_ten(int x) {
   return x + 10;
 }
 
-/* Call by Address: Modifies x, does not return a value */
-void add_twenty(int *x) {
+/* Call-by-address - modifies the parameter x, does not return a value */
+void add_twenty(int * x) {
   *x = *x + 20;
 }
 
-/* Since the array length is unknown, we ned to pass the length as well */
+/* Since the array length is unknown we need to pass the length as a parameter */
 int add_array(int a[], int len) {
-  int ii;
   int sum = 0;
-  for(ii=0;ii<len;ii++) {
+  for (int ii=0;ii<len;ii++) {
     sum += a[ii];
   }
   return sum;
 }
+
