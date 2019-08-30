@@ -9,24 +9,28 @@ int main(void) {
 
   unsigned int ii;
 
-  /* What happens when we go past the end of the array? */
+  /* This is undefined behavior! */
   for (ii=0;ii<6;ii++) {
-    printf("a[%d]=%d (%x)\t\tb[%d]=%f\n", ii, a[ii], a[ii], ii, b[ii]);
+    printf("a[%d]=%d\t\tb[%d]=%.2f\n", ii, a[ii], ii, b[ii]);
   }
+
   printf("\n");
 
-  /* Are these sizes what you expect ? */
-  printf("Size of int=%lu\t", sizeof(int));   
-  printf("Size of a=%lu\n", sizeof(a));   
-  printf("Size of double=%lu\t", sizeof(double));   
-  printf("Size of b=%lu\n", sizeof(b));   
+  /* Are these sizes what you expect? */
+  printf("Size of int=%lu\n", sizeof(int));
+  printf("Size of a=%lu\n", sizeof(a));
+  printf("Size of double=%lu\n", sizeof(double));
+  printf("Size of b=%lu\n", sizeof(b));
   printf("\n");
 
-  /* what does (sizeof(a)/sizeof(int) do? */
-  for (ii=0;ii<(sizeof(a)/sizeof(int));ii++) {
-    printf("a[%d]=%d (%x)\n", ii, a[ii], a[ii]);
-  }
-  printf("\n\n");
 
+  a[2] = 20;
+  a[3] = 200;
+  /* what does (sizeof(a)/sizeof(int)) do? */
+  for(ii=0;ii<(sizeof(a)/sizeof(int));ii++) {
+    printf("a[%d]=%d  (%x)\n", ii, a[ii], a[ii]);
+  }
+  printf("\n");
+    
   return 0;
 }
