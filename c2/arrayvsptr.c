@@ -38,7 +38,6 @@ int main(void) {
   /* You can assign a value to a pointer, but not an array name */
   /* VALID: ptr = &ii; */
   /* COMPILE ERROR arr = &ii; */
-
     
   printf("\n\nPointer arithmetic (using increment operator): \n");
   for(ii=0;ii<5;ii++) {
