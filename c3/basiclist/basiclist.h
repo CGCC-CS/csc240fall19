@@ -9,5 +9,6 @@ typedef struct node {
 } node_t;
 
 int list_add(node_t ** list, void * data);
+void * list_remove_first(node_t ** list);
 
 #endif

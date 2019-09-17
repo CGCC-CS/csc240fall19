@@ -52,10 +52,10 @@ int main(void) {
   for (ii=0;ii<MAX;ii++) {
     counter[ii]=0;
   }
-  printf("fib(%d)=%d\n", MAX, fib(MAX));
   /*
-  printf("fibtail(%d)=%d\n", MAX, fibtail(MAX));
+  printf("fib(%d)=%d\n", MAX, fib(MAX));
   */
+  printf("fibtail(%d)=%d\n", MAX, fibtail(MAX));
 
   /* Print counter for each number */
   for (ii=0;ii<MAX;ii++) {

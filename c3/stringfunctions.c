@@ -14,6 +14,7 @@ int main(void) {
     char str2[LEN] = "World";
     char * ptr1 = (char *) malloc(LEN);
     char * ptr2 = (char *) malloc(LEN);
+    char mystr[100];
 
     /* COPYING A STRING */
     /* NOTE: strcpy should not be used because it does no bounds checking! */
@@ -92,6 +93,15 @@ int main(void) {
     strncat(ptr1, " 2015", 3); /* append 3 characters - will cut off any extras */
     printf("  After: str2 : %s\n", str2);
     printf("  After: ptr1 : %s\n", ptr1);
+
+    printf("\nUsing sprintf: \n");
+    sprintf(mystr, "Hello %d %.2f", 10, 9.8999999);
+    printf("   mystr: %s\n", mystr);
+    sprintf(mystr, "(%d,%d)", 3, -2);
+    printf("   mystr: %s\n", mystr);
+    sprintf(mystr, "%dx^%d", 2, 3);
+    printf("   mystr: %s\n", mystr);
+
 
     free(ptr1);
     free(ptr2);
