@@ -10,7 +10,7 @@ int main() {
     double c = {3.4};
 
     int d = 3.14;
-    // int e = {3.14};    // Compiler error due to incompatible types
+    //int e = {3.14};    // Compiler warning due to incompatible types
 
     cout << "a = " << a << endl;
     cout << "b = " << b << endl;
@@ -27,7 +27,6 @@ int main() {
     cout << "n = " << n << endl;
     cout << "o = " << o << endl;
     cout << "p = " << p << endl;
-
 
     // Constants
     const int cint = 10;

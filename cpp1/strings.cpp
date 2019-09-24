@@ -1,25 +1,23 @@
 #include<iostream>
 #include<string>
 
+using namespace std;
+
 int main() {
-  std::string str1 = "Hello";
-  std::string str2 = "World";
+  string str1 = "Hello";
+  string str2 = "World";
+  string str3 = "String";
 
   // C-style string
   char cstr1[] = "C style";
-  int num = 10;
+  int num {10};
 
-  // Print message by appending strings
-  std::cout << str1 + ", " + str2 + "!" << std::endl;
+  // print message by appending string
+  cout << str1 + ", " + str2 + "!" << endl;
+  cout << str1 + ", " + cstr1 + "!" << endl;
 
-  // Appending a C-style string to a C++ string
-  std::cout << "Concatenate string literal with " + *cstr1 << std::endl;
-  std::cout << "Concatenate string literal with " + *cstr1 << std::endl;
-  std::string str3 = "Concatenate string object with  ";
-  std::cout << str3 + *cstr1 << std::endl;
-
-  // Append an int to a string - have to convert the string first
-  std::cout << "str3 = " << str3 + std::to_string(num) << std::endl;
+  // Append an int to a string - convert the int to a string first
+  cout << "str3 = " << str3 + to_string(num) << endl;
 
   // Replace part of the string
   std::string str4 = "I am a C++ programmer";
@@ -31,14 +29,13 @@ int main() {
   str4.replace(10,3,"Prolog");
   std::cout << " After replace 2: " << str4 << std::endl;
 
-  // Get a substrin
+  // Get a substring
   std::string str5 = str4.substr(4,3);
   std::cout << "str5: " << str5 << std::endl;
 
   // Convert string to a C-style string
   const char * cstr2 = str3.c_str();
   std::cout << "cstr2: " << cstr2 << std::endl;
-
 
   return 0;
 }
