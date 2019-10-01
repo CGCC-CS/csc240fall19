@@ -16,7 +16,7 @@ class myDeleteClass {
     *a = counter * 5;
     b = new int[*a];
     for (int ii=0;ii<*a;ii++) {
-      b[ii] = ii;
+      b[ii] = ii+1;
     }
     counter ++;
   }
@@ -34,7 +34,7 @@ class myDeleteClass {
   void print() {
     cout << "  object " << *a << ": " ;
     for(int ii=0;ii<*a;ii++) {
-      cout << b[ii] << "  "; 
+      cout << b[ii] << " "; 
     }
     cout << endl;
   }

@@ -18,7 +18,8 @@ class MyClass {
       b = counter;
       counter ++;
       name = n;
-      cout << "  Constructor " << name << " " << b << " : " << a << " (" << *a << ")" << endl;
+      cout << "  Constructor " << name << " " << b << " : " 
+             << a << " (" << *a << ")" << endl;
     }
 
     // Copy constructor
@@ -26,31 +27,34 @@ class MyClass {
       a = new int;
       *a = *(original.a);
       b = original.b * 10;
-      name = "COPY";
-      cout << "    Copy Ctor " << name << " " << b << " : " << a << " (" << *a << ")" << endl;
-    }
-
-    ~MyClass() {
-      cout << "   Destructor " << name << " " << b << " : " << a << " (" << *a << ")" << endl;
-      delete a;
-      a = nullptr;
+      name = original.name + "COPY";
+      cout << "    Copy ctor " << name << " " << b << " : " 
+             << a << " (" << *a << ")" << endl;
     }
 
     void print() {
-      cout << "       object " << name << " " << b << " : " << a << " (" << *a << ")" << endl;
+      cout << "       object " << name << " " << b << " : "
+             << a << " (" << *a << ")" << endl;
+    }
+
+    ~MyClass() {
+      cout << "   Destructor " << name << " " << b << " : "
+             << a << " (" << *a << ")" << endl;
+      delete a;
+      a = nullptr;
     }
 };
 
-void func(MyClass k) {
+void func(MyClass cparam) {
  cout << " FUNC: ++++++++++++ start func ++++++++++++" << endl;
 
  cout << " FUNC: begin declare c3" << endl;
  MyClass c3(3, "c3");
  cout << " FUNC: end declare c3" << endl;
 
- cout << " FUNC: begin print k" << endl;
- k.print();
- cout << " FUNC: end print k" << endl;
+ cout << " FUNC: begin print cparam" << endl;
+ cparam.print();
+ cout << " FUNC: end print cparam" << endl;
 
  cout << " FUNC: begin print c3" << endl;
  c3.print();
@@ -61,24 +65,26 @@ void func(MyClass k) {
 
 int main() {
   cout << "MAIN: start" << endl;
+
   cout << "MAIN: begin declare c1" << endl;
   MyClass c1(1, "c1");         // MyClass object allocated on stack
   cout << "MAIN: end declare c1" << endl;
+
   cout << "MAIN: begin declare c2" << endl;
   MyClass * c2;
   cout << "MAIN: end declare c2" << endl;
-  cout << "MAIN: begin instantiate c2" << endl;
+  cout << "MAIN: begin instantiate c2 with new" << endl;
   c2 = new MyClass(2, "c2");  // MyClass object allocated on heap
-  cout << "MAIN: end instantiate c2" << endl;
+  cout << "MAIN: end instantiate c2 with new" << endl;
 
-  cout <<" MAIN: begin call func()" << endl;
+  cout << "MAIN: begin call to func(c1)" << endl;
   func(c1);
-  cout <<" MAIN: end call func()" << endl;
+  cout << "MAIN: end call to func(c1)" << endl;
 
   cout << "MAIN: begin delete c2" << endl;
   delete c2;
   cout << "MAIN: end delete c2" << endl;
-  
+    
   cout << "MAIN: exiting" << endl;
   return 0;
 }

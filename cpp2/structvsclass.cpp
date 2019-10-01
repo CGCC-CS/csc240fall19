@@ -9,6 +9,8 @@ using namespace std;
 struct myStruct {
   int a;
   char c[8];
+
+  void tryThis() { cout << "Hi" << endl;}
 };
 
 // C++ class
@@ -16,6 +18,7 @@ class myClass {
   public:
     int a;
     string c;
+
     myClass(int x, string y) {
        a = x;
        c = y;
