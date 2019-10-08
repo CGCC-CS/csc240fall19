@@ -1,9 +1,11 @@
 #include<iostream>
+#include<string>
 #include<vector>
 #include<algorithm>
 
 using namespace std;
-template<typename T> void printVector(vector<T> vec, string name="");
+
+template<typename T> void printVector(vector<T> vec, const string name);
 
 int main() {
   vector<int> v1(10);              // Create a vector with capactity 10
@@ -23,6 +25,7 @@ int main() {
   cout << "Vector v3 capacity = " << v3.capacity() << endl;
   cout << "Vector v4 size = " << v4.size() << endl;
   cout << "Vector v4 capacity = " << v4.capacity() << endl;
+
 
   cout << endl << "Accessing the values in a vector:" << endl;
   // The following is UNSAFE!
@@ -52,7 +55,7 @@ int main() {
   }
   cout << endl;
 
-  v1[4] = 5;
+  v1[4] = 5;  // Note the output of the two loops below
   cout << endl << "v1[4] = 5;" << endl;
   cout << "Vector v1 size = " << vsize << endl;
   cout << "Vector v1 capacity = " << v1.capacity() << endl;
@@ -64,11 +67,11 @@ int main() {
   for (unsigned int ii=0; ii< v1.capacity(); ii++) {
     cout << v1[ii] << ", ";
   }
-  
-  
+  cout << endl;
+ 
   v1.push_back(6);
   cout << endl << "v1.push_back(6);" << endl;
-  cout << "Vector v1 size = " << vsize << endl;
+  cout << "Vector v1 size = " << v1.size() << endl;
   cout << "Vector v1 capacity = " << v1.capacity() << endl;
   cout << "  For-each: ";
   for (auto& ii : v1) {
@@ -92,7 +95,7 @@ int main() {
   for (int ii=0;ii<10;ii++) {
     v1.push_back(ii+10);
   }
-  printVector(v1, "v1");
+  printVector(v1, "v1"); 
 
   cout << endl << "Removing elements from v1" << endl;
   cout << "                         Before : ";
@@ -101,7 +104,7 @@ int main() {
   cout << "          Removed first element : ";
   printVector(v1, "v1");
   v1.erase(v1.begin()+3);
-  cout << "          Removed third element : ";
+  cout << "          Removed forth element : ";
   printVector(v1, "v1");
   v1.erase(v1.end()-1);
   cout << "           Removed last element : ";
@@ -116,6 +119,7 @@ int main() {
   cout << "         Removed using pop_back : ";
   printVector(v1, "v1");
 
+
   cout << endl << "Print front & back and pop_back of v3: " << endl;
   cout << " v3 front: " << v3.front() << endl;
   cout << " v3 back: " << v3.back() << endl;
@@ -124,16 +128,15 @@ int main() {
   cout << endl << "  Before:";
   printVector(v4, "v4");
   sort(v4.begin(), v4.end());
-  cout << endl << "   After:";
+  cout << "   After:";
   printVector(v4, "v4");
   
-
   cout << endl;
   return 0;
 }
 
 template<typename T>
-void printVector(vector<T> vec, const& string name) {
+void printVector(vector<T> vec, const string name) {
   cout << "Vector " << name << " s=" << vec.size() 
                     << " c=" << vec.capacity() << "  ";
   for (auto& ii : vec) {
