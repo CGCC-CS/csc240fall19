@@ -8,10 +8,10 @@
 ; Functional style:
 ;   calculate(change(something))
 
-; A Scheme form is smoething you ask Scheme to evaluate
+; A Scheme form is something you ask Scheme to evaluate
 
 1
-"Hello, World!"
+"Hello, world!"
 (+ 1 2)
 (+ 1 2 3)
 (= 1 (- 3 2) (+ -4 5))
@@ -33,7 +33,11 @@
 (atom? (cons 1 2))
 (atom? (list 1 2 3))
 
-(define 1#$#&%FV 10)
+(define mynumber 10)
+(define myname "Wade")
+(+ mynumber 6)
+(define 1#$#&%FV 5)
+(+ 1#$#&%FV mynumber)
 
 (newline)
 "Data types"
@@ -53,7 +57,6 @@
 12.3           ; real
 7/3            ; fractions
 4+2i           ; imaginary
-
 
 (newline)
 "Number predicates"
@@ -82,6 +85,7 @@
 (number? (car '(8 10 5)))
 (number? "One")
 (number? 'One)
+(number? '1)
 
 (newline)
 "Symbols & Strings"
@@ -102,6 +106,7 @@
 (+ 1 2)
 (* 3 4)
 (- 1)
+(- -1)
 (+ 1 2 3 4 5 6 7 8 9 10)
 (* 1 2 3 4 5 6 7 8 9 10)
 (* (/ (* 7 (- 8 2)) (/ (* 6 3) (* 2 3 2 (/ 1 2)))) 2)
@@ -109,6 +114,7 @@
 (sqrt 20)
 (sqrt -1)
 (/ 17 3)
+(/ 17.0 3.0)
 (quotient 17 3)
 (remainder 17 3)
 
@@ -124,38 +130,42 @@ z
 (+ 2 x)
 (* x (/ y 6))
 (= x 12)
+(< x 12)
 (= 30 (z))
 (= x (+ 15 -5))
 
 (newline)
 "Defining procedures"
-(* 3 x) ; Scheme form
-(lambda (x) (* 3 x))      ; unnamed procedure
+(* 3 x)  ; Scheme form
+(lambda (x) (* 3 x))  ; Unamed procedure
 ((lambda (x) (* 3 x)) 5)
-((lambda (x) (* 3 x)) x)  ; be careful with scope!
-(define trip      ; define associates a name with a form
-  (lambda (x)     ; lambda defines a procedure
-    (* 3 x)))     ; this form associates the name "trip" with the lambda expresssion
+((lambda (x) (* 3 x)) x)
+(define trip  ; define associates a name with a form
+  (lambda (x) ; lambda defines a procedure
+    (* 3 x))) ; this form associates the name "trip" with the lambda expression
 trip
-(trip 9)
-(trip y)
+(trip 5)
+(trip x)
+(trip (z))
 (+ 1 x (trip 5))
 
-"Defining a procedure with 2 parameters"
+"Define a procedure with 2 parameters"
 (define addem
   (lambda (a b)
     (+ a b)))
 addem
 (addem x y)
-(addem 10 (addem 20 30))
+(addem 10 (addem 20 3))
 
-(newline)
-"Function as a parameter"
+"Indrement function"
 (define increment
   (lambda (x)
     (+ x 1)))
 (increment 8)
 (increment (increment (increment (increment 0))))
+
+(newline)
+"Function as a parameter"
 (define do
   (lambda (this that)
     (this that)))
@@ -164,8 +174,11 @@ addem
 (do trip 27)
 (do integer? 8)
 (do (lambda (x) (* x (+ x 1))) 3)
+
 ;(do 10 20)   ; 10 is not a procedure
 ;(do addem 1) ; airity mismatch - addem takes 2 procedures
+(do (lambda (x) (addem x 100)) 1)
+
 
 (newline)
 "Conditionals"
@@ -193,7 +206,7 @@ x
         1
         (* n (fact (- n 1))))))
 (fact 10)
-;(fact 1000)
+;(fact 10000)
 
 "Tail-recursive factorial"
 (define fact-tail
@@ -203,7 +216,8 @@ x
   (lambda (n acc)
     (if (<= n 1)
         acc
-        (fact-tail-acc (- n 1) (* acc n)))))
+        (fact-tail-acc (- n 1) (* n acc)))))
+(fact-tail 10)
 
 (newline)
 "Lists"
@@ -222,12 +236,13 @@ oplist
 
 (newline)
 "quote vs list"
-(+ 1 2)       ; evaluate the operator + on the operands 1 & 2
-'(+ 1 2)      ; do not evaluate, treat like a list
-(list + 1 2)  ; add the addition operator, 1 & 2 to a list
+(+ 1 2)          ; evaluate the operator + on the operands 1 & 2
+'(+ 1 2)         ; do not evaluate, treat like a list
+(quote (+ 1 2))  ; same as above
+(list + 1 2)     ; add the addition operator, 1 & 2 to a list
 
 (newline)
-"list operations"
+"List operations"
 lst
 (car lst)
 (cdr lst)
@@ -235,9 +250,12 @@ lst
 (cdr (cdr lst))
 (car (cdr (cdr lst)))
 (cdr (cdr (cdr lst)))
+"Other examples"
 (cdr '(1))
-(car '((4 5 6)))
-(car (car '((4 5 6))))
+(car '((4 5 6 )))
+(cdr '((4 5 6 )))
+(car (car '((4 5 6 ))))
+(cdr (car '((4 5 6 ))))
 (car (cdr '(a b c)))
 (cadr '(a b c))
 (caddr '(a b c))
@@ -246,6 +264,7 @@ lst
 "List with size 1"
 (car '(1))
 (cdr '(1))
+
 
 
 (newline)
@@ -287,7 +306,7 @@ lst4
 (newline)
 "Cool example"
 oplist
-(car oplist)    ; +
-((car oplist) 1 2 3 4)
-((cadr oplist) 24 7)  ; -
-((car (cdr (cdr oplist))) 10 11 12)  ; *
+(car oplist) ; +
+((car oplist) 1 2 3 4)  ; +
+((cadr oplist) 1 2 3 4)  ; -
+((car (cdr (cdr oplist))) 10 11 12) ;*
