@@ -18,18 +18,7 @@ c
 (opposite 10)
 (opposite -10)
 (opposite (opposite 12))
-
-(newline)
-"null"
-null
-(null? '())
-(null? 3)
-(null? 0)
-;(null? ())
-(null? (+ 5 2))
-(null? (cdr '(1)))
-(null? null?)
-(null? null)
+(opposite (opposite -14))
 
 (newline)
 "Tail recursive Fibonacci implementation"
@@ -42,6 +31,19 @@ null
         (+ f1 f2)
         (fib-tail-acc (- x 1) f1 (+ f1 f2)))))
 (fib-tail 10)
+(fib-tail 20)
+
+(newline)
+"null"
+null
+(null? '())
+(null? 3)
+(null? 0)
+;(null? ())
+(null? (+ 5 2))
+(null? null)
+(null? null?)
+(null? (cdr '(1)))
 
 (newline)
 "Elements in a list"
@@ -50,8 +52,10 @@ null
 (define isit-lst2 (list + 2 3))
 (define isit-lst3 (list (+ 2 3 )))
 (define isit-lst4 (list '(+ 2 3 )))
-(define isit-lst5 (cons '+ (cons '2 (cons '3 '()))))
-(define isit-lst6 (cons + (cons 2 (cons 3 '()))))
+(define isit-lst5 (cons '+ (cons 2 '(3))))
+(define isit-lst6 (cons '+ (cons 2 (cons 3 '()))))
+(define isit-lst7 (cons '+ (cons 2 (cons 3 null))))
+
 isit-lst0
 isit-lst1
 isit-lst2
@@ -59,15 +63,17 @@ isit-lst3
 isit-lst4
 isit-lst5
 isit-lst6
+isit-lst7
 
 (length isit-lst4)
 (length (car isit-lst4))
 (car isit-lst4)
 (cdr isit-lst4)
-;((car isit-lst1) 8 9 10)
-((car isit-lst2) 8 9 10)
+;((car isit-lst1) 10 20 30)
+((car isit-lst2) 10 20 30)
 ;      +                 2                 3
 ((car isit-lst2) (cadr isit-lst2) (caddr isit-lst2))
+
 
 (newline)
 "More lists"
@@ -93,7 +99,6 @@ exlst3
 (what-is-it? +)
 (what-is-it? -4)
 
-
 (define return-something
   (lambda (x)
     (cond
@@ -107,7 +112,7 @@ exlst3
 (return-something 3)
 
 (newline)
-"Recursion"
+"Recursive arithmetic"
 (define increment
   (lambda (x)
     (+ x 1)))
@@ -122,25 +127,26 @@ exlst3
     (if (zero? y)
         x
         (recursive-add (increment x) (decrement y)))))
-(recursive-add 3 4)
-(recursive-add 15 10)
+(recursive-add 10 5)
+(recursive-add 23 7)
+(recursive-add 0 5)
 
 (define recursive-mult
   (lambda (x y)
-    (recursive-mult-helper x 0 y)))
-(define recursive-mult-helper
-  (lambda (x n y)
-    (if (zero? y)
-        n
-        (recursive-mult-helper x (recursive-add x n) (decrement y)))))
+    (if (zero? (decrement y))
+        x
+;        (recursive-mult (recursive-add x y) (decrement y)))))
+        (recursive-add x (recursive-mult x (decrement y))))))
 (recursive-mult 3 4)
-(recursive-mult 10 15)
+(recursive-mult 15 10)
+(recursive-mult 0 3)
 
 (newline)
 "List operations"
 (car '(a))
 (cdr '(a))
 (cons 'b '(a))
+
 (newline)
 (define lst '(1 2 3 4))
 (car lst)
@@ -152,10 +158,15 @@ exlst3
 (append '(a b c) lst)
 (append lst lst)
 (append lst (cons lst lst))
+(cons lst 5)
+(cons lst (list 5))
+(append lst (list 5))
 
 (newline)
 "Procedures with lists"
 lst
+
+"Check if a list is non-empty"
 (define non-empty-list?
   (lambda (lst)
     (not (or (not (list? lst)) (null? lst)))))
@@ -163,18 +174,20 @@ lst
 (non-empty-list? 3)
 (non-empty-list? lst)
 
+"Do nothing with a list"
 (define do-nothing
   (lambda (lst)
     (if (null? lst)
         '()
         (cons (car lst) (do-nothing (cdr lst))))))
-(do-nothing '())
+(do-nothing '(8 9 10 11 12))
+(do-nothing (list 3 + 'Hello "World" 7))
 (do-nothing lst)
 
 "Check if something is a list of atoms - from The Little Schemer"
 (define atom?
-  (lambda (x)
-    (and (not (pair? x)) (not (null? x)))))
+  (lambda (a)
+    (and (not (pair? a)) (not (null? a)))))
 "lat?"
 (define lat?
   (lambda (lst)
@@ -182,9 +195,10 @@ lst
       ((null? lst) #t)
       ((atom? (car lst)) (lat? (cdr lst)))
       (else #f))))
-(lat? '(1 2 3 4))
-(lat? '(a b c))
-(lat? '((1 2 3) (a b c)))
+(lat? '(8 9 10 11 12))
+(lat? (list 3 + 'Hello "World" 7))
+(lat? (list lst '(a b c)))
+(lat? lst)
 
 "member?"
 (define member?
@@ -199,7 +213,8 @@ lst
 (member? 4 '(1 2 (3 4) 5))
 (member? '(3 4) '(1 2 (3 4) 5))
 (member? 5 '(1 2 (3 4) 5))
-
+(member? 7 '(1 2 (3 4) 5))
+ 
 "Remove an element from a list - from The Little Schemer"
 ;Only removes the *first* occurrence
 "rember"
@@ -212,18 +227,6 @@ lst
 (rember 3 '(1 2 3 4))
 (rember 1 '(1 2 3 4))
 (rember 5 '(1 2 3 4))
-
-"Replace an element in a list"
-(define replace
-  (lambda (ele lst rep)
-    (cond
-      ((null? lst) '())
-      ((eq? (car lst) ele) (cons rep (replace ele (cdr lst) rep)))
-      (else (cons (car lst) (replace ele (cdr lst) rep))))))
-(replace 4 '(1 2 3 4 3 2 1) 5)
-(replace 1 '(1 2 3 4 3 2 1) -1)
-(replace 3 '(1 2 3 4 3 2 1) 'three)
-(replace 'b '(a b c a b c d e f) 'B)
 
 "Add two lists of numbers"
 (define addlists
@@ -252,7 +255,7 @@ lst
         (+ (car lst) (sumlist (cdr lst))))))
 (sumlist lst)
 (sumlist '(-1 2 3 -4 7 -3 9 -4))
-(sumlist (cons 10 lst))
+(sumlist (numlist 100))
 
 "Double each element in the list"
 (define double
@@ -265,20 +268,23 @@ lst
         (cons (double (car lst)) (doublelist (cdr lst))))))
 (doublelist lst)
 (doublelist '(-1 2 3 -4 7 -3 9 -4))
-(doublelist (cons 10 lst))
+(doublelist (numlist 10))
 
-"The sum of the double of each element in the list"
+"The sume of the double of each element in the list"
 (define sumdoublelist
   (lambda (lst)
     (if (null? lst)
         0
         (+ (double (car lst)) (sumdoublelist (cdr lst))))))
 (sumdoublelist lst)
+(sumdoublelist '(-1 2 3 -4 7 -3 9 -4))
+(sumdoublelist (numlist 10))
 
-(define better-sumdoublelst
+"Or the lazy way"
+(define better-sumdoublelist
   (lambda (lst)
     (sumlist (doublelist lst))))
-(better-sumdoublelst lst)
+(better-sumdoublelist '(-1 2 3 -4 7 -3 9 -4))
 
 "Duplicate each element of the list"
 (define duplicatelist
@@ -287,7 +293,7 @@ lst
         '()
         (cons (car lst) (cons (car lst) (duplicatelist (cdr lst)))))))
 (duplicatelist lst)
-    
+
 "Return list with only numbers"
 (define onlynums
   (lambda (lst)
@@ -296,8 +302,7 @@ lst
         (if (number? (car lst))
             (cons (car lst) (onlynums (cdr lst)))
             (onlynums (cdr lst))))))
-(onlynums '('hello "world"))
-(onlynums (list a b c 'd 'e 'f 1 2 3 'hello '(4 5 6) + - (+ 2 3)))
+
 
 "Pairs"
 (cons 1 '(2))
@@ -314,6 +319,9 @@ lst
 pair1
 pair2
 pair3
+(pair? '(1 2 3))
+(pair? '(1))
+(pair? '())
 (car pair1)
 (cdr pair1)
 (cons 'a 'b)
@@ -323,5 +331,4 @@ pair3
 ;examples of pair
 '(30 . 90)    ; lat/long
 '(neworleans . (30 . 90))
-
 
