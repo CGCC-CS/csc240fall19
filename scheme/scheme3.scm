@@ -119,28 +119,29 @@
 (sum-num-square badlst)
 
 (newline)
-(define secret_num
-  (lambda (n)
-    (lambda (x)
-      (= x n))))
-(secret_num 10)
-(define guessing_game (secret_num 10))
+"Currying"
+(define secret-num
+  (lambda (secret guess)
+    (= secret guess)))
+(secret-num 10 5)
+(secret-num 10 10)
+
+; secret-num-curr returns a function with only 1 arguement (the guess)
+(define secret-num-curr
+  (lambda (secret)
+    (lambda (guess)
+      (= secret guess))))
+(secret-num-curr 10)
+(define guessing_game (secret-num-curr 10))
 guessing_game
 (guessing_game 5)
 (guessing_game 10)
 
-(define big_num
-  (lambda (n)
+(define in-range
+  (lambda (min max)
     (lambda (x)
-      (> x n))))
-(big_num 10)
-(define winner? (big_num 10))
-(winner? 1)
-(winner? 17)
-
-(define positive? (big_num 0))
-(positive? 10)
-(positive? -3)
+      (and (>= x min) (<= x max)))))
+(filter (in-range 10 20) '(1 8 43 17 9 12 20 26 64 15))
 
 (define increase
   (lambda (n)
