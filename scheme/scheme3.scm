@@ -1,26 +1,6 @@
 #lang scheme
 
-(define (increment a) (+ a 1))  ; note that a has local scope
-((lambda (x) (+ x 1)) 10)       ; unnamed procecure
-(define increment_lambda        ; name an unnamed procedure
-  (lambda (x)
-    (+ x 1)))
-
-(define x 10)
-(increment 10)
-(increment x)
-(increment_lambda 10)
-
-(lambda (x) (* x 2))
-((lambda (x) (* x 2)) 10)
-
-(define do
-  (lambda (this that)
-    (this that)))
-(do increment 8)
-(do (lambda (x) (* x 2)) 10)
-
-; multi-conditional procedures
+"multi-conditional procedures"
 (define grade
   (lambda (n)
     (cond
@@ -33,6 +13,30 @@
 (grade 899)
 (grade 901)
 
+"Working with define & functions"
+(define (increment a) (+ a 1))  ; note that a has local scope
+(increment 5)
+((lambda (a) (+ a 1)) 5)        ; unnamed procedure
+(define increment-lambda        ; define names the unnamed procedure
+  (lambda (a)
+    (+ a 1)))
+(increment-lambda 5)
+
+(define x 10)
+(increment 10)
+(increment x)
+(increment-lambda 10)
+
+"lambda example"
+(lambda (x) (* x 2))
+((lambda (x) (* x 2)) 10)
+
+(define do
+  (lambda (this that)
+    (this that)))
+(do increment 8)
+(do (lambda (x) (* x 2)) 8)
+(do - 10)
 
 "Multiply-all"
 (define multiply-all
@@ -48,11 +52,10 @@
   (lambda (operator base-case lst)
     (if (null? lst)
         base-case
-        (operator (car lst) (red operator base-case (cdr lst))))))
+        (operator (car lst)  (red operator base-case (cdr lst))))))
 
-(red + 0 '(1 2 3 4))
 (red * 1 '(1 2 3 4))
-
+(red + 0 '(1 2 3 4))
 (define sum-all
   (lambda (lst)
     (red + 0 lst)))
@@ -68,18 +71,25 @@
 (double-lst '(1 2 3 4))
 
 (newline)
+; (red proc base-case '(1 2 3 4 5 6 7))
 "length"
-(red (lambda (x y) (+ 1 y)) 0 '(1 2 3 4))
+(red (lambda (x y) (+ 1 y)) 0 '(1 2 3 4 5 6 7))
 "square list"
-(red (lambda (x y) (cons (* x x) y)) '() '(1 2 3 4))
+(red (lambda (x y) (cons (* x x) y)) '() '(1 2 3 4 5 6 7))
 "get-odds"
-(red (lambda (x y) (if (= 0 (remainder x 2)) y (cons x y))) '() '(1 2 3 4))
+(red (lambda (x y) (if (= 0 (remainder x 2)) y (cons x y))) '() '(1 2 3 4 5 6 7))
 "reverse"
-(red (lambda (x y) (append y (list x))) '() '(1 2 3 4))
+(red (lambda (x y) (append y (list x))) '() '(1 2 3 4 5 6 7))
 
+
+(newline)
+"Defined lists"
 (define lst '(1 2 3 4 5 6 7 8 9 10 11 12 13))
 (define lstn '(0 -1 2 -3 4 -5 6 -7 8 -9 10 -11 12 -13))
 (define badlst (list "CGCC" 1 'a + 10 'hello lst '(1 2 3) '(a . b) red 8 6 -3))
+lst
+lstn
+badlst
 
 (newline)
 "Higher-order functions - apply"
@@ -90,10 +100,11 @@
 
 (newline)
 "Higher-order functions - map"
+(map (lambda (x) (* x 5)) lst)
+(map (lambda (x) (if (< x 0) (- x) x)) lstn)
 (map increment lst)
 (map (lambda (x) (* x x)) lst)
 (map (lambda (x) (* x x)) lstn)
-(map (lambda (x) (if (> x 0) x (* -1 x))) lstn)
 (map (lambda (x) (if (>= x 0) #t #f)) lstn)
 (map pair? badlst)
 (map string? badlst)
@@ -104,18 +115,17 @@
 (filter pair? badlst)
 (filter string? badlst)
 (filter number? badlst)
-(filter (lambda (x) (not (pair? x))) lstn)
 
 (newline)
-"combining higher-order functions)"
+"Combine higher-order functions"
 (map (lambda (x) (* x x)) (filter number? badlst))
 (apply + (map (lambda (x) (* x x)) (filter number? badlst)))
 
-; function to calculate the sum of the squares of numbers in a list
+; Function to calculate the sum of the squares of numbers in a lsit
 (define sum-num-square
   (lambda (lst)
     (apply + (map (lambda (x) (* x x)) (filter number? lst)))))
-(sum-num-square lst)
+(sum-num-square lstn)
 (sum-num-square badlst)
 
 (newline)
@@ -126,16 +136,16 @@
 (secret-num 10 5)
 (secret-num 10 10)
 
-; secret-num-curr returns a function with only 1 arguement (the guess)
+; secret-num-curr returns a function with only 1 argument (the guess)
 (define secret-num-curr
   (lambda (secret)
     (lambda (guess)
       (= secret guess))))
 (secret-num-curr 10)
-(define guessing_game (secret-num-curr 10))
-guessing_game
-(guessing_game 5)
-(guessing_game 10)
+(define guessing-game (secret-num-curr 10))
+guessing-game
+(guessing-game 5)
+(guessing-game 10)
 
 (define in-range
   (lambda (min max)
@@ -147,7 +157,7 @@ guessing_game
   (lambda (n)
     (lambda (x)
       (+ x n))))
-(map (increase 10) '(1 2 3 4))
+(map (increase 10) '(1 2 3 4 5))
 
 (newline)
 "Define a polynomial"
@@ -155,11 +165,10 @@ guessing_game
   (lambda (a b c)
     (lambda (x)
       (+ (* a x x) (* b x) c))))
-(quad 1 1 1) 3
-((quad 1 1 1) 3)
-(define f1 (quad 1 1 1))   ; f(x) = x^2 + x + 1
-(define f2 (quad 1 2 3))   ; f(x) = x^2 + 2x + 3
-(define f3 (quad 2 4 2))   ; f(x) = 2x^2 + 4x + 2
+(quad 1 1 1)
+(define f1 (quad 1 1 1))    ; f(x) = x^2 + x + 1
+(define f2 (quad 1 2 3))    ; f(x) = x^2 + 2x + 3
+(define f3 (quad 2 4 2))    ; f(x) = 2x^2 + 4x + 2
 (define f4 (quad 1 (/ 1 2) (/ 1 4))) ; f(x) = x^2 + 1/2 x + 1/4
 f1
 (f1 2)
@@ -176,6 +185,8 @@ f1
 (require "scheme3inc.scm")
 (fib-tail 10)
 
+(newline)
+"Towers of Hanoi"
 (define hanoi
   (lambda (n source center destination)
     (if (= n 1)  ; stopping condition
@@ -185,10 +196,10 @@ f1
           (hanoi 1 source center destination)
           (hanoi (- n 1) center source destination))
       )))
-(hanoi 4 'red 'middle 'blue)
+(hanoi 3 'red 'green 'blue)
 
 (newline)
-"let stuctures (scope)"
+"let structures (scope)"
 (define a 100)
 a
 
@@ -199,14 +210,14 @@ a
 
 (let
     ((a 4)
-     (b (+ a 1)))   ; a comes from the outer scope
+     (b (+ a 1)))    ; a comes from the outer scope
   (* a b))
 
 (let
     ((a 4))
   (let
-      ((b (+ a 1)))
-    (* a b)))       ; a comes from the inner scope
+      ((b (+ a 1)))  ; a comes from the inner scope
+    (* a b)))
 
 ; You can make things confusing
 (let
@@ -216,6 +227,14 @@ a
        (y (* 5 x)))
     (+ x y)))
 
+(let
+    ((map apply)
+     (filter map)
+     (apply length)
+     (absolutely-do-not-filter filter))
+  (map + (filter (lambda (x) (* x x)) (absolutely-do-not-filter number? badlst))))
+
+"Define a function that uses let"
 (define let-test
   (lambda (x)
     (let
@@ -223,8 +242,7 @@ a
          (b (+ 1 x))
          (c 5))
       (+ a b c))))
-(let-test 10)
-
+(let-test 6)
 
 (define habitat-material
   (lambda (height radius thickness)
@@ -242,7 +260,7 @@ a
 (let
     ((+ 10)
      (- 4)
-     (* -))
+     (* (lambda (x y) (min x y))))
   (* + -))
 
 (newline)
